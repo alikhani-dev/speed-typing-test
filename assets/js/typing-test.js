@@ -1,89 +1,100 @@
-const TIME_LIMIT = 200;
-const TEXT =
-	'سعی نکنید همه چیز را بدانید. شما ممکن است خیلی چیزها را دیده و انجام داده باشید، اما لزوما به این معنی نیست که شما می دانید بهترین است. سعی نکنید به مردم بگویید که چگونه می توانند کارها را به شیوه ای بهتر انجام دهند یا اینکه بهتر می توانند کاری انجام دهند.';
+const TIME_LIMIT = 200
 
-const wpmText = document.getElementById('wpm');
-const timerText = document.getElementById('time');
-const errorText = document.getElementById('errors');
-const textArea = document.getElementById('textarea');
-const typeText = document.getElementById('type-text');
-const accuracyText = document.getElementById('accuracy');
+const wpmText = document.getElementById('wpm')
+const timerText = document.getElementById('time')
+const errorText = document.getElementById('errors')
+const textArea = document.getElementById('textarea')
+const typeText = document.getElementById('type-text')
+const accuracyText = document.getElementById('accuracy')
 
-let errors = 0;
-let accuracy = 0;
-let timeLeft = 0;
-let timeElapsed = 0;
-let typedCharacter = 0;
-let timer = null;
-let hasStarted = false;
+let errors = 0
+let accuracy = 0
+let timeLeft = 0
+let timeElapsed = 0
+let typedCharacter = 0
+let timer = null
+let hasStarted = false
+let TEXT
 
-initializeTest({ timeLimit: TIME_LIMIT, text: TEXT });
-textArea.addEventListener('input', update);
+document.addEventListener('DOMContentLoaded', () => {
+	try {
+		fetch('https://type.fit/api/quotes')
+			.then((response) => response.ok && response.json())
+			.then((response) => {
+				const random = Math.trunc(Math.random() * 1643)
+				TEXT = response[random]
+				initializeTest({ timeLimit: TIME_LIMIT, text: TEXT.text })
+				textArea.addEventListener('input', update)
+			})
+	} catch (err) {
+		console.log(err)
+	}
+})
 
 function initializeTest({ timeLimit, text }) {
-	timerText.innerHTML = timeLimit;
-	text.split('').forEach((character) => (typeText.innerHTML += `<span>${character}</span>`));
+	timerText.innerHTML = timeLimit
+	text.split('').forEach((character) => (typeText.innerHTML += `<span>${character}</span>`))
 }
 
 function update() {
 	if (!hasStarted) {
-		timer = setInterval(updateTimer, 1000);
-		hasStarted = true;
+		timer = setInterval(updateTimer, 1000)
+		hasStarted = true
 	}
-	typedCharacter++;
-	maxCharacter();
-	updateCharactersStatus();
-	updateErrors();
-	updateAccuracy();
+	typedCharacter++
+	maxCharacter()
+	updateCharactersStatus()
+	updateErrors()
+	updateAccuracy()
 }
 
 function maxCharacter() {
-	const { length } = TEXT;
-	textArea.setAttribute('maxLength', length);
+	const { length } = TEXT
+	textArea.setAttribute('maxLength', length)
 }
 
 function updateCharactersStatus() {
-	const character = [...textArea.value];
-	let index = 0;
+	const character = [...textArea.value]
+	let index = 0
 	for (const span of typeText.children) {
 		if (!character[index]) {
-			span.className = '';
+			span.className = ''
 		} else if (span.innerHTML === character[index]) {
-			span.className = 'correct-char';
+			span.className = 'correct-char'
 		} else {
-			span.className = 'incorrect-char';
+			span.className = 'incorrect-char'
 		}
-		++index;
+		++index
 	}
 }
 
 function updateAccuracy() {
-	accuracyText.innerHTML = Math.round((typedCharacter - errors) / typedCharacter) * 100;
+	accuracyText.innerHTML = Math.round((typedCharacter - errors) / typedCharacter) * 100
 }
 
 function updateErrors() {
-	errors = typeText.querySelectorAll('.incorrect-char').length;
-	errorText.innerHTML = errors;
+	errors = typeText.querySelectorAll('.incorrect-char').length
+	errorText.innerHTML = errors
 }
 
 function updateWpm() {
-	wpmText.innerHTML = Math.round((typedCharacter / 5 / timeElapsed) * 60);
+	wpmText.innerHTML = Math.round((typedCharacter / 5 / timeElapsed) * 60)
 }
 
 function updateTimer() {
-	timeLeft = TIME_LIMIT - timeElapsed;
-	timerText.innerHTML = timeLeft;
+	timeLeft = TIME_LIMIT - timeElapsed
+	timerText.innerHTML = timeLeft
 	if (TIME_LIMIT == timeElapsed) {
-		finishTest();
+		finishTest()
 	}
 	if (timeElapsed !== 0) {
-		updateWpm();
+		updateWpm()
 	}
-	updateErrors();
-	timeElapsed += 1;
+	updateErrors()
+	timeElapsed += 1
 }
 
 function finishTest() {
-	textArea.disabled = true;
-	clearInterval(timer);
+	textArea.disabled = true
+	clearInterval(timer)
 }
