@@ -1,17 +1,16 @@
-@import url('https://v1.fontapi.ir/css/Vazir:400@400');
+@import url('https://fonts.googleapis.com/css2?family=Palanquin:wght@300&display=swap');
 
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    font-family: 'Vazir', sans-serif;
+    font-family: 'Palanquin', sans-serif;
 }
 
 body {
     background-color: #2c3e50;
     color: #000;
     text-align: center;
-    direction: rtl
 }
 
 .container {
@@ -33,6 +32,10 @@ body {
 .header {
     display: flex;
     align-items: center
+}
+
+.header .label {
+    width: 130px;
 }
 
 .info-box {
