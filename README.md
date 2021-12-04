@@ -5,7 +5,7 @@
 - [x]  Show Typing Speed 
 - [x]  Show Accuracy & typos
 - [x]  Show WPM
-- [ ]  Get paragraph Api
+- [x]  Connect Api
 - [ ]  Customize timer 
 
 
