@@ -1,5 +1,3 @@
-const TIME_LIMIT = 200
-
 const wpmText = document.getElementById('wpm')
 const timerText = document.getElementById('time')
 const errorText = document.getElementById('errors')
@@ -15,6 +13,7 @@ let typedCharacter = 0
 let timer = null
 let hasStarted = false
 let TEXT
+let TIME_LIMIT
 
 document.addEventListener('DOMContentLoaded', () => {
 	try {
@@ -22,8 +21,9 @@ document.addEventListener('DOMContentLoaded', () => {
 			.then((response) => response.ok && response.json())
 			.then((response) => {
 				const random = Math.trunc(Math.random() * 1643)
-				TEXT = response[random]
-				initializeTest({ timeLimit: TIME_LIMIT, text: TEXT.text })
+				TEXT = response[random].text
+				TIME_LIMIT = Math.trunc(TEXT.length * 0.5)
+				initializeTest({ timeLimit: TIME_LIMIT, text: TEXT })
 				textArea.addEventListener('input', update)
 			})
 	} catch (err) {
@@ -69,7 +69,7 @@ function updateCharactersStatus() {
 }
 
 function updateAccuracy() {
-	accuracyText.innerHTML = Math.round((typedCharacter - errors) / typedCharacter) * 100
+	accuracyText.innerHTML = Math.round(((typedCharacter - errors) / typedCharacter) * 100)
 }
 
 function updateErrors() {
