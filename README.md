@@ -1,12 +1,11 @@
 ## Preview
-![ezgif-3-95f453154f5c](https://user-images.githubusercontent.com/87765316/144405427-ab8a65cb-b8d8-488a-a8b9-cf856f0820cf.gif)
+![Pre](https://user-images.githubusercontent.com/87765316/144747876-f64476e1-46e5-4a86-9fac-9d908121d649.gif)
 
 ## Features
 - [x]  Show Typing Speed 
 - [x]  Show Accuracy & typos
 - [x]  Show WPM
 - [x]  Connect Api
-- [ ]  Customize timer 
 
 
 ## Contact US
